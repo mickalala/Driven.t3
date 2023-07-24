@@ -8,6 +8,6 @@ bookingRouter
     .all('/*', authenticateToken)
     .get('/', listReservations)
     .post('/', makeReservation)
-    .put('/', changeReservation)
+    .put('/:bookingId', changeReservation)
 
 export { bookingRouter };

@@ -24,7 +24,7 @@ async function getTicketByUserId(userId: number): Promise<Ticket> {
 async function createTicket(userId: number, ticketTypeId: number): Promise<Ticket> {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) throw notFoundError();
-
+  
   const ticketData: CreateTicketParams = {
     ticketTypeId,
     enrollmentId: enrollment.id,
