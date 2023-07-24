@@ -10,7 +10,7 @@ export async function listReservations(req: AuthenticatedRequest, res: Response)
         const booking = await bookingService.listReservations(userId)
         res.status(httpStatus.OK).send(booking)
     } catch (error) {
-        res.sendStatus(404)
+        res.sendStatus(httpStatus.NOT_FOUND)
     }
 }
 
@@ -21,7 +21,13 @@ export async function makeReservation(req: AuthenticatedRequest, res: Response) 
         const bookingId = await bookingService.makeReservation(userId, roomId);
         res.status(httpStatus.OK).send(bookingId)
     } catch (error) {
-
+        if (error.name === 'NotFoundError') {
+            return res.sendStatus(httpStatus.NOT_FOUND);
+        }
+        if (error.name === 'NoVancancy') {
+            return res.sendStatus(httpStatus.FORBIDDEN)
+        }
+        res.sendStatus(httpStatus.FORBIDDEN)
     }
 }
 
@@ -34,6 +40,11 @@ export async function changeReservation(req: AuthenticatedRequest, res: Response
         res.status(httpStatus.OK).send(reservationId)
 
     } catch (error) {
-
+        if (error.name === 'NotFoundError') {
+            return res.sendStatus(httpStatus.NOT_FOUND);
+        } if (error.name === 'NoVancancy') {
+            return res.sendStatus(httpStatus.FORBIDDEN)
+        }
+        res.sendStatus(httpStatus.FORBIDDEN)
     }
 }

@@ -29,7 +29,7 @@ async function makeReservation(userId: number, bookingRoomId: number) {
 
     const room = await bookingRepository.findRoom(bookingRoomId);
     if (!room) throw notFoundError();
-    if (room.capacity === 0) throw { type: 403, message: 'no vacancy' }
+    if (room.capacity === 0) throw { name: 'NoVacancy', message: 'no vacancy' }
 
     await bookingRepository.makeReservation(bookingData)
     const bookingId = await bookingRepository.getBookingByUserId(userId)
@@ -41,9 +41,9 @@ async function makeReservation(userId: number, bookingRoomId: number) {
 async function updateReservation(userId: number, bookingId: number, roomId: number) {
 
     const reservation = await bookingRepository.getBookingByUserId(userId);
-    if (!reservation) throw { type: 403, message: 'no vacancy' }
+    if (!reservation) throw { name: 'NoVacancy', message: 'no vacancy' }
     if (!reservation.Room.id) throw notFoundError();
-    if (reservation.Room.capacity === 0) throw { type: 403, message: 'no vacancy' }
+    if (reservation.Room.capacity === 0) throw { name: 'NoVacancy', message: 'no vacancy' }
 
     await bookingRepository.changeReservation(bookingId, roomId)
     return bookingId;

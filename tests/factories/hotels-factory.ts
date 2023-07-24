@@ -7,6 +7,7 @@ export async function createHotel() {
       name: faker.name.findName(),
       image: faker.image.imageUrl(),
     },
+    include: { Rooms: true }
   });
 }
 
@@ -16,6 +17,15 @@ export async function createRoomWithHotelId(hotelId: number) {
       name: '1020',
       capacity: 3,
       hotelId: hotelId,
+    },
+  });
+}
+export async function createRoom(hotelId: number, capacity: number = undefined) {
+  return await prisma.room.create({
+    data: {
+      name: faker.name.findName(),
+      capacity: capacity || faker.datatype.number(),
+      hotelId,
     },
   });
 }
