@@ -29,6 +29,7 @@ async function makeReservation(userId: number, bookingRoomId: number) {
 
     const room = await bookingRepository.findRoom(bookingRoomId);
     if (!room) throw notFoundError();
+    if (!room.id) throw notFoundError();
     if (room.capacity === 0) throw { name: 'NoVacancy', message: 'no vacancy' }
 
     await bookingRepository.makeReservation(bookingData)
